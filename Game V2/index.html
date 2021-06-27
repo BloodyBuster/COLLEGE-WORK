@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Gamedev Canvas Workshop</title>
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet"> 
+    <style>
+    	* { padding: 0; margin: 0; }
+    	canvas { 
+            background-color: white;
+            border: 7.5px ridge rgb(68, 61, 61);
+            display: block; 
+            margin: 0 auto; 
+            }
+        .box1 {
+            background-color: rgb(141, 137, 137);
+            margin: 10px;
+        }
+        .box2 {
+            background-color: whitesmoke;
+            margin: 0 auto;
+            display: block;
+            width: 125px;
+            text-align: center;
+            padding: 12.5px;
+            margin-bottom: 5px;
+        }
+        .box3 {
+            background-color: whitesmoke;
+            margin: 0 auto;
+            display: block;
+            width: 125px;
+            text-align: center;
+            padding: 12.5px;
+        }
+        .btn {
+            background-color: aliceblue;
+            width: 35px;
+            margin: 0 auto;
+            padding: 2.5px;
+        }
+        .btn2 {
+            background-color: aliceblue;
+            width: 95px;
+            margin: 0 auto;
+            padding: 2.5px;
+        }
+    </style>
+</head>
+<body>
+<canvas id="ctx" width="640px" height="380px"></canvas>
+<div class="box1">
+    <div class="box1">
+        <div class="box2">
+            <button class="btn" id="W">W</button><br><br>
+            <button class="btn" id="A">A</button>
+            <button class="btn" id="S">S</button>
+            <button class="btn" id="D">D</button>  
+        </div>
+        <div class="box3">
+            <button class="btn" id="up">&#8593;</button><br><br>
+            <button class="btn" id="left">&#8592;</button>
+            <button class="btn" id="down">&#8595;</button>
+            <button class="btn" id="right">&#8594;</button>  
+        </div>
+        <div class="box3">
+                <button class="btn2" id="space">SPACE</button><br><br>
+        </div>
+    </div>
+</div>
+<script>
+var canvas = document.getElementById("ctx");
+var ctx = canvas.getContext("2d");
+
+var WIDTH = 640;
+var HEIGHT = 380;
+var Paused = true;
+// PLAYER INFO
+var gameStartedTime = Date.now();
+var score = 0;
+var coin = 0;
+var enemyKilled = 0;
+var enemyExplode = 0;
+var attkSpd = 1;
+var hpMax = 5
+var hp = hpMax
+var playerAlive = true
+var fireRate = 20
+var playerSpeed = 0.5
+// ESSENTIALS
+var directionSave = 0
+var frameCount = 0
+// GLOBAL MODIFIER
+var enemySlow = 1
+var enemySpawnRate = 100
+var enemySpawnRateControl = 1;
+var alienSpawnChance_2 = 0
+var alienSpawnChance_3 = 0
+var alienSpawnChance_4 = 0
+var alienSpawnChance_5 = 0
+var alienSpawnControl = 1
+// UPGRADE
+var upgradeFireRate = 1
+var upgradeControl_1 = 1
+var upgradeSpeed = 1
+var upgradeControl_2 = 1
+var upgradeHp = 1
+var upgradeControl_3 = 1
+var upgradeUnlock = false
+
+
+myMusic = new Audio('music/backgroundMusic.mp3');
+gameOver = new Audio('music/gameOver.wav');
+//myMusic.addEventListener('ended', function() {
+//    this.currentTime = 0;
+//    this.play();
+//    }, false);
+// IMAGES
+var img = {}
+img.player = new Image();
+img.player.src = "img/player.png";
+img.map = new Image();
+img.map.src = "img/map.png";
+img.background = new Image();
+img.background.src = "img/background.jpg";
+img.projectile = new Image();
+img.projectile.src = "img/projectile.png";
+img.alien1 = new Image();
+img.alien1.src = "img/alien1.png";
+img.alien1_2 = new Image();
+img.alien1_2.src = "img/alien1_2.png";
+img.alien2 = new Image();
+img.alien2.src = "img/alien2.png";
+img.alien3 = new Image();
+img.alien3.src = "img/alien3.png";
+img.alien3_2 = new Image();
+img.alien3_2.src = "img/alien3_2.png";
+img.alien4 = new Image();
+img.alien4.src = "img/alien4.png";
+img.alien5 = new Image();
+img.alien5.src = "img/alien5.png";
+img.coin = new Image();
+img.coin.src = "img/coin.png";
+img.fireRate = new Image();
+img.fireRate.src = "img/fireRate.png";
+img.nuke = new Image();
+img.nuke.src = "img/nuke.png";
+img.explosion = new Image();
+img.explosion.src = "img/explosion.png";
+img.explosion2 = new Image();
+img.explosion2.src = "img/explosion2.png";
+img.explosion3 = new Image();
+img.explosion3.src = "img/explosion3.png";
+img.explosion4 = new Image();
+img.explosion4.src = "img/explosion4.png";
+img.fix = new Image();
+img.fix.src = "img/fix.png";
+img.lock = new Image();
+img.lock.src = "img/lock.png";
+img.frame = new Image();
+img.frame.src = "img/frame.png";
+img.frame2 = new Image();
+img.frame2.src = "img/frame2.png";
+// START THE GAME
+startGame =  function() {
+    gameStartedTime = Date.now();
+    score = 0;
+    coin = 1000;
+    enemyKilled = 0;
+    enemyExplode = 0;
+    attkSpd = 1;
+    hpMax = 5
+    hp = hpMax
+    fireRate = 20
+    playerAlive = true
+    directionSave = 0
+    frameCount = 0
+    player = Player(WIDTH/2,HEIGHT/2,20,20);
+    Paused = false
+    enemyList = {}
+    upgradeList = {}
+    explosionList = {}
+    frameCount = 0
+    refreshGame = setInterval(gameUpdate,10)
+    clearInterval(refreshExplosion)
+    myMusic.currentTime = 0
+    myMusic.play();
+    enemySpawnRate = 100
+    enemySpawnRateControl = 1
+    alienSpawnChance_2 = 0
+    alienSpawnChance_3 = 0
+    alienSpawnChance_4 = 0
+    alienSpawnChance_5 = 0
+    upgradeFireRate = 1
+    upgradeControl_1 = 1
+    upgradeSpeed = 1
+    upgradeControl_2 = 1
+    upgradeHp = 1
+    upgradeControl_3 = 1
+    upgradeUnlock = false
+}
+gameMenu = function() {
+    if(playerAlive) {
+        loadMap()
+        ctx.font = "45pt VT323";
+        ctx.fillStyle = "white";
+        ctx.fillText('SPACE SHOOTER GAME',120,185);
+        ctx.font = "15pt VT323";
+        ctx.fillStyle = "white";
+        ctx.fillText('press space to play the game',220,215);   
+    }
+    if(!playerAlive) {
+        ctx.font = "45pt VT323";
+        ctx.fillStyle = "white";
+        ctx.fillText('GAME OVER',220,185);
+        ctx.font = "15pt VT323";
+        ctx.fillText('press space to play the game',220,215);   
+    }
+    if(spacePressed) {
+        ctx.clearRect(0,0,WIDTH,HEIGHT);
+        clearInterval(refreshMenu)
+        startGame()
+    }
+}
+
+var refreshMenu = setInterval(gameMenu,10)
+
+loadMap = function() {
+    ctx.drawImage(img.map,0,0,img.map.width,img.map.height,0,0,WIDTH,HEIGHT);
+}
+upgradeMenu = function() {
+    var upgradePrice_1 = 5*upgradeControl_1
+    var upgradePrice_2 = 10*upgradeControl_2
+    var upgradePrice_3 = 10*upgradeControl_3
+    ctx.clearRect(20,40,600,300);
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "purple";
+    ctx.drawImage(img.background,0,0,img.background.width,img.background.height,20,40,600,300);
+    ctx.fillRect(20,40,600,300)
+    ctx.strokeRect(20,40,600,300)
+    ctx.fillStyle = "white";
+    ctx.fillText('UPGRADE MENU',180,95);
+    //ctx.fillRect(55,130,95,30)
+    ctx.drawImage(img.frame2,0,0,img.frame2.width,img.frame2.height,55,130,95,30)
+    //ctx.fillRect(55,170,95,100)
+    ctx.drawImage(img.frame,0,0,img.frame.width,img.frame.height,55,170,95,100)
+    //ctx.fillRect(200,130,95,30)
+    ctx.drawImage(img.frame2,0,0,img.frame2.width,img.frame2.height,200,130,95,30)
+    //ctx.fillRect(200,170,95,100)
+    ctx.drawImage(img.frame,0,0,img.frame.width,img.frame.height,200,170,95,100)
+    //ctx.fillRect(345,130,95,30)
+    ctx.drawImage(img.frame2,0,0,img.frame2.width,img.frame2.height,345,130,95,30)
+    //ctx.fillRect(345,170,95,100)
+    ctx.drawImage(img.frame,0,0,img.frame.width,img.frame.height,345,170,95,100)
+    //ctx.fillRect(490,130,95,30)
+    ctx.drawImage(img.frame2,0,0,img.frame2.width,img.frame2.height,490,130,95,30)
+    //ctx.fillRect(490,170,95,100)
+    ctx.drawImage(img.frame,0,0,img.frame.width,img.frame.height,490,170,95,100)
+    ctx.font = "20pt VT323";
+    ctx.fillStyle = "black";
+    ctx.fillText('LV : ' + upgradeFireRate,70 ,155);
+    ctx.fillText('LV : ' + upgradeSpeed,215 ,155);
+    ctx.fillText('LV : ' + upgradeHp,360,155);    
+    ctx.fillStyle = "White";
+    ctx.fillText('Coin : ' + coin,50 ,315);
+    ctx.font = "12.5pt VT323";
+    ctx.fillStyle = "black";
+    ctx.fillText('Fire Rate',72.5 ,190);
+    ctx.fillText('Speed ',230 ,190);
+    ctx.fillText('Durability',360 ,190);
+    if(upgradeFireRate == 3 && upgradeSpeed == 5 && upgradeHp == 5) {
+        upgradeUnlock = true
+    } 
+    if(upgradeFireRate < 3) {
+        ctx.fillText(upgradePrice_1,95 ,260);
+    }
+    else {ctx.fillText('Maxed',80 ,260);}
+    if(upgradeSpeed < 5) {
+        ctx.fillText(upgradePrice_2,240 ,260);
+    }
+    else {ctx.fillText('Maxed',230 ,260);}
+    if(upgradeHp < 5) {
+        ctx.fillText(upgradePrice_3,385 ,260);
+    }
+    else {ctx.fillText('Maxed',370 ,260);}
+    if(upgradeUnlock) {
+        ctx.font = "20pt VT323";
+        ctx.fillText('LV : ',505,155);
+        ctx.font = "15pt VT323";
+        ctx.fillText('Damage',510 ,185);
+    }
+    if(!upgradeUnlock) {
+        ctx.font = "20pt VT323";
+        ctx.fillText('LV : ??',505,155);
+        ctx.font = "15pt VT323";
+        ctx.drawImage(img.lock,0,0,img.lock.width,img.lock.height,512.5,190,50,60)
+    }
+    
+    if(upgradeDelay) {
+        if(upgradeFireRate < 3) {
+            if(upPressed) {
+                if(coin >= 5*upgradeControl_1) {
+                    fireRate -= 5
+                    if(fireRate <= 10) {
+                        fireRate = 10
+                    }
+                    coin -= 5*upgradeControl_1
+                    upgradeControl_1++
+                    upgradeFireRate++
+                    upgradeDelay = false
+                    upgradeTimer()
+                }
+            }
+        }
+        if(upgradeSpeed < 5) {
+            if(downPressed) {
+                if(coin >= 10*upgradeControl_2) {
+                    playerSpeed += 0.1
+                    if(playerSpeed >= 1) {
+                        playerSpeed = 1
+                    }
+                    coin -= 10*upgradeControl_2
+                    upgradeControl_2 += 2
+                    upgradeSpeed++
+                    upgradeDelay = false
+                    upgradeTimer()
+                }
+            }
+        }
+        if(upgradeHp < 5) {
+            if(leftPressed) {
+                if(coin >= 10*upgradeControl_3) {
+                    if(upgradeControl_3 == 4) {
+                        hpMax += 2  
+                    }
+                    else
+                    hpMax += 1
+                    hp = hpMax
+                    if(hpMax >= 10) {
+                        hpMax = 10
+                    }
+                    coin -= 15*upgradeControl_3
+                    upgradeControl_3 += 1
+                    upgradeHp++
+                    upgradeDelay = false
+                    upgradeTimer()
+                }
+            }
+        }
+    }
+}
+var upgradeDelay = true
+function upgradeTimer() {
+  setTimeout(function(){ upgradeDelay = true }, 250);
+}
+var refreshUpgradeMenu = 0;
+gameUpdate = function() {
+    if(Paused) {
+        ctx.font = "45pt VT323";
+        upgradeMenu()
+        myMusic.pause()
+        return ;
+    }
+    //console.log("Spawn Rate : " + enemySpawnRate)
+    //console.log("alienspawnchance 4 : " + alienSpawnChance_4)
+    //console.log("alienspawnchance 3 : " + alienSpawnChance_3)
+    //console.log("alienspawnchance 2 : " + alienSpawnChance_2)
+   // console.log("alienspawnchance 5 : " + alienSpawnChance_5)
+    playerAlive = true
+    ctx.clearRect(0,0,WIDTH,HEIGHT);
+    loadMap();
+    ctx.font = "20px VT323";
+    Explosion.update();
+    Enemy.update(); 
+    
+    
+    Upgrade.update();
+    player.update();
+    score++
+    frameCount++;
+}
+Player = function(x,y,width,height) {
+    var self = {
+		x:x,
+		y:y,
+		width:width,
+		height:height,
+    }
+    self.walkingMod = 0;
+    self.info = function () {
+        ctx.font = "12.5pt VT323";
+        ctx.strokeStyle = "black"
+        ctx.strokeText("HP : " + hp, 50, 55);
+        ctx.strokeText("Time : " + (Date.now() - gameStartedTime)/1000, 270, 30);
+        ctx.strokeText("Enemy Killed : " + enemyKilled, 260, 55);
+        ctx.strokeText("Score : " + score, 510, 55);
+        ctx.strokeText("Coin : " + coin, 410, 55);
+        ctx.font = "12.5pt VT323";
+        self.hpBar();
+        ctx.fillStyle = "white";
+        ctx.fillText("HP : " + hp, 50, 55);
+        ctx.fillText("Time : " + (Date.now() - gameStartedTime)/1000, 270, 30);
+        ctx.fillText("Enemy Killed : " + enemyKilled, 260, 55);
+        ctx.fillText("Score : " + score, 510, 55);
+        ctx.fillText("Coin : " + coin, 410, 55);
+    }
+    self.hpBar = function() {
+        ctx.fillStyle = 'green';
+        if(hp < 4) {
+            ctx.fillStyle = '#fed000';
+        }
+        if(hp < 2) {
+            ctx.fillStyle = 'red';
+        }
+        var bar = 100*hp/hpMax;
+        if(bar < 0)
+        bar = 0
+        ctx.fillRect(22,41,bar,17.5);
+        ctx.strokeStyle = 'white';
+        ctx.strokeRect(22,41,100,17.5);
+    }
+    self.draw = function() {
+        var x = self.x 
+        var y = self.y 
+        var directionMod = directionSave
+        if(wPressed) {
+            directionMod = 0;
+            directionSave = 0;
+        }
+        if(sPressed) {
+            directionMod = 7;
+            directionSave = 7;
+        }
+        if(upPressed) {
+            directionMod = 0;
+            directionSave = 0;
+        }
+        if(downPressed) {
+            directionMod = 7;
+            directionSave = 7;
+        }
+        if(wPressed && dPressed) {
+            directionMod = 1;
+            directionSave = 1
+        }
+        else if(dPressed && sPressed) {
+            directionMod = 3;
+            directionSave = 3;
+        }
+        else if(sPressed && aPressed) {
+            directionMod = 6;
+            directionSave = 6;
+        }
+        else if(aPressed && wPressed) {
+            directionMod = 4;
+            directionSave = 4;
+        }
+        else if(dPressed) {
+            directionMod = 2;
+            directionSave = 2;
+        }
+        else if(aPressed) {
+            directionMod = 5;
+            directionSave = 5;
+        }
+
+        if(upPressed) {
+            directionMod = 0;
+            directionSave = 0;
+        }
+        if(downPressed) {
+            directionMod = 7;
+            directionSave = 7;
+        }
+        if(upPressed && rightPressed) {
+            directionMod = 1;
+            directionSave = 1
+        }
+        else if(rightPressed && downPressed) {
+            directionMod = 3;
+            directionSave = 3;
+        }
+        else if(downPressed && leftPressed) {
+            directionMod = 6;
+            directionSave = 6;
+        }
+        else if(leftPressed && upPressed) {
+            directionMod = 4;
+            directionSave = 4;
+        }
+        else if(rightPressed) {
+            directionMod = 2;
+            directionSave = 2;
+        }
+        else if(leftPressed) {
+            directionMod = 5;
+            directionSave = 5;
+        }
+        
+        var jetPulseMod = Math.floor(self.walkingMod) % 3;
+        ctx.drawImage(img.player,jetPulseMod*64,directionMod*64,img.player.width/3,img.player.height/8,x-25,y-25,50,50);
+        ctx.restore();
+    }
+    self.updatePosition = function() {
+        // PLAYER MOVEMENT
+        if(dPressed) {
+            self.x += 2.1*playerSpeed;
+        }
+        else if(aPressed) {
+            self.x -= 2.1*playerSpeed;
+        }
+        if(sPressed) {
+            self.y += 2.1*playerSpeed;
+        }
+        else if(wPressed) {
+            self.y -= 2.1*playerSpeed;
+        }
+        // MAP BORDER
+        if(self.x + 2.55*playerSpeed > WIDTH - 10) {
+            self.x = self.x - 2.55*playerSpeed
+        }
+        else if(self.x < 0 + 10) {
+            self.x = self.x + 2.55*playerSpeed
+        }
+        if(self.y + 2.55*playerSpeed > HEIGHT - 10) {
+            self.y = self.y - 2.55*playerSpeed
+        }
+        else if(self.y < 0 + 10) {
+            self.y = self.y + 2.55*playerSpeed
+        }
+    }
+    self.playerAttack = function() {
+        if(frameCount % (fireRate/attkSpd) === 0) {
+                GenerateBullet();                
+        }
+        for(var key in bulletList){
+            updateProjectile(bulletList[key]);
+        }
+    }
+    self.onDeath = function() {
+        if(hp <= 0) {
+            playerAlive = false
+            Explosion(player.x,player.y,Math.random(),30,30,0)
+            clearInterval(refreshGame)
+            myMusic.pause()
+            refreshExplosion = setInterval(Explosion.update,5)
+            gameOver.play()
+            gameMenu()
+            refreshMenu = setInterval(gameMenu,10)
+        }
+    }
+    self.update = function() {
+        self.walkingMod += 0.075;
+        self.updatePosition();
+        self.draw();
+        self.playerAttack();
+        self.info();
+        self.onDeath();
+    }
+    return self
+
+}
+var player = Player(WIDTH/2,HEIGHT/2,20,20);
+var bulletList = {};
+// BULLET
+GenerateBullet = function(){        
+        var height = 15;
+        var width = 15;
+        var id = Math.random();      
+            if(rightPressed ) {
+                var spdX = 12;
+                var spdY = 0;
+                var bulletX = player.x+12.5;
+                var bulletY = player.y;
+                audio.playSound('laserSound');
+            }         
+            if(leftPressed) {
+                var spdX = -12;
+                var spdY = 0;
+                var bulletX = player.x-12.5;
+                var bulletY = player.y;
+                audio.playSound('laserSound');
+            }
+            if(leftPressed && downPressed) {
+                var spdX = -12;
+                var spdY = 12;
+                var bulletX = player.x;
+                var bulletY = player.y;
+                audio.playSound('laserSound');
+            }
+            else if(leftPressed && upPressed) {
+                var spdX = -12;
+                var spdY = -12;
+                var bulletX = player.x;
+                var bulletY = player.y;
+                audio.playSound('laserSound');
+            }
+            else if(rightPressed && downPressed) {
+                var spdX = 12;
+                var spdY = 12;
+                var bulletX = player.x;
+                var bulletY = player.y;
+                audio.playSound('laserSound');
+            }
+            else if(rightPressed && upPressed) {
+                var spdX = 12;
+                var spdY = -12;
+                var bulletX = player.x;
+                var bulletY = player.y;
+                audio.playSound('laserSound');
+            }
+            else if(downPressed) {
+                var spdX = 0;
+                var spdY = 12;
+                var bulletX = player.x;
+                var bulletY = player.y+12.5;
+                audio.playSound('laserSound');
+            }
+            else if(upPressed) {
+                var spdX = 0;
+                var spdY = -12;
+                var bulletX = player.x;
+                var bulletY = player.y-12.5;
+                audio.playSound('laserSound');
+            }
+            
+        Bullet(id,bulletX,bulletY,spdX,spdY,width,height);
+}
+
+Bullet = function (id,x,y,spdX,spdY,width,height){
+        var self = {
+                x:x,
+                spdX:spdX,
+                y:y,
+                spdY:spdY,
+                id:id,
+                width:width,
+                height:height,
+        };
+        bulletList[id] = self;
+    
+}
+updateEntityPosition = function(something){
+        something.x += something.spdX;
+        something.y += something.spdY;
+                       
+        if(something.x < 0 || something.x > 640){
+                delete something.x;
+        }
+        if(something.y < 0 || something.y > 380){
+                delete something.y;
+        }
+}
+updateProjectile = function (something){
+        updateEntityPosition(something);
+        drawProjectile(something);
+}
+drawProjectile = function(something){
+        var x = something.x-something.width/2;
+        var y = something.y-something.height/2;
+        ctx.save();
+        ctx.drawImage(img.projectile,0,0,img.projectile.width,img.projectile.height,x,y,something.width,something.height);
+        ctx.restore();
+}
+// ENEMY
+checkEnemyId = function(id,hp) {
+    if(id == 2 && hp < 2) {
+        return img.alien1_2
+    }
+    if(id == 2) {
+        return img.alien1
+    }
+    if(id == 1) {
+         return img.alien2
+    }
+    if(id == 3 && hp < 2) {
+         return img.alien3_2
+    }
+    if(id == 3) {
+         return img.alien3
+    }
+    if(id == 4) {
+        return img.alien4
+    }
+    if(id == 5) {
+        return img.alien5
+    }
+   
+}
+var enemyList = {};
+Enemy = function(id,x,y,width,height,hp,charID) {
+    var self = {
+                x:x,
+                y:y,
+                id:id,
+                width:width,
+                height:height,
+                charID:charID,
+                hp:hp,
+    };
+    enemyList[id] = self;
+    self.animationTimer = 0
+    self.speedMod = 1
+	self.update = function(){
+        self.draw();
+        self.enemyPosition();
+        self.animationTimer += 0.01875;
+
+    }
+    self.draw = function() {
+        var animationTime_X = Math.floor(self.animationTimer) % 2;
+        var bossCreepSpawn = Math.floor(self.animationTimer) % 4;
+
+        if(charID == 4) {
+            if(bossCreepSpawn % 2 == 0) {
+                if(frameCount % 75 === 0) {
+                    Enemy(Math.random(),self.x,self.y,25,25,1,1);              
+                }
+            }
+        }
+        
+        ctx.drawImage(checkEnemyId(self.charID,self.hp),animationTime_X*(checkEnemyId(self.charID,self.hp).width/2),
+
+        0,checkEnemyId(self.charID,self.hp).width/2,checkEnemyId(self.charID,self.hp).height,self.x-self.width/2,
+        
+        self.y-self.height/2,self.width,self.height);
+
+
+    }
+    function creepSpawner() {
+    setTimeout(function(){ Enemy(Math.random(),self.x,self.y,25,25,1,1); }, 250);
+    }
+    self.enemyPosition = function() {
+        var diffX = player.x - self.x;
+        var diffY = player.y - self.y;
+
+        if(self.charID == 3)
+        self.speedMod = 0.75
+
+        if(self.charID == 4)
+        self.speedMod = 0.25
+
+        if(self.charID == 5)
+        self.speedMod = 1.25
+        
+		if(diffX > 0)
+        self.x += 1*self.speedMod*enemySlow
+		if(diffX < 0)
+        self.x -= 1*self.speedMod*enemySlow
+			
+		if(diffY > 0)
+        self.y += 1*self.speedMod*enemySlow
+		else
+        self.y -= 1*self.speedMod*enemySlow
+    }
+    self.testCollision = function(entity2){	//return if colliding (true/false)
+		var rect1 = {
+			x:self.x-self.width/2,
+			y:self.y-self.height/2,
+			width:self.width,
+			height:self.height,
+		}
+		var rect2 = {
+			x:entity2.x-entity2.width/2,
+			y:entity2.y-entity2.height/2,
+			width:entity2.width,
+			height:entity2.height,
+		}
+		return testCollisionRectRect(rect1,rect2);
+    }
+}
+
+Enemy.randomlyGenerate = function(){
+    var spawnLocation = Math.floor((Math.random() * 4) + 1);
+    if (spawnLocation == 1) {
+        var x = Math.floor((Math.random() * 25) + 5);
+        var y = Math.floor((Math.random() * 380) + 0);
+    }
+    if (spawnLocation == 2) {
+        var x = Math.floor((Math.random() * 640) + 5);
+        var y = Math.floor((Math.random() * 25) + 5);
+    }
+    if (spawnLocation == 3) {
+        var x = Math.floor((Math.random() * 635) + 610);
+        var y = Math.floor((Math.random() * 380) + 0);
+    }
+    if (spawnLocation == 4) {
+        var x = Math.floor((Math.random() * 640) + 5);
+        var y = Math.floor((Math.random() * 375) + 350);
+    }
+    var id = Math.random();
+    var spawnChance = Math.random() * 100
+    if(spawnChance < alienSpawnChance_4) {
+        var charID = 4
+        var height = 50;
+	    var width = 100;
+        var hp = 10
+    }
+    else if(spawnChance < alienSpawnChance_3) {
+        var charID = 3
+        var height = 35;
+	    var width = 35;
+        var hp = 3
+    }
+    else if(spawnChance < alienSpawnChance_2) {
+        var charID = 2
+        var height = 30;
+	    var width = 30;
+        var hp  = 2
+    }
+    else if(spawnChance < alienSpawnChance_5) {
+        var charID = 5
+        var height = 25;
+	    var width = 25;
+        var hp  = 1
+    }
+    else if(spawnChance < 100) {
+        var charID = 1
+        var height = 25;
+	    var width = 25;
+        var hp  = 1
+    }
+    Enemy(id,x,y,width,height,hp,charID);
+}
+
+Enemy.update = function(){
+
+	if(frameCount % (enemySpawnRate) === 0) {	//every 4 sec
+        Enemy.randomlyGenerate();
+    }
+	for(var key in enemyList){
+        enemyList[key].update();
+        if(enemyList[key].testCollision(player)){
+                hp -= 1;
+                Explosion(enemyList[key].x,enemyList[key].y,Math.random(),30,30,0)
+                audio.playSound('hurtSound');
+                delete enemyList[key]
+            }
+    }
+    for(var key in bulletList){
+        for(var key2 in enemyList){
+            var isColliding = enemyList[key2].testCollision(bulletList[key],enemyList[key2]);
+                if(isColliding){
+                    enemyList[key2].hp = enemyList[key2].hp - 1;
+                    hitExplosion(enemyList[key2].x,enemyList[key2].y,Math.random())
+                    audio.playSound('hitSound');
+                    delete bulletList[key];
+                    if (enemyList[key2].hp < 1) {  
+                        score += 250;
+                        enemyKilled++;
+                        Explosion(enemyList[key2].x,enemyList[key2].y,Math.random(),enemyList[key2].width,enemyList[key2].height)
+                        if(enemyList[key2].charID == 4) {
+                            Enemy(Math.random(),enemyList[key2].x,enemyList[key2].y+50,25,25,1,1);
+                            Enemy(Math.random(),enemyList[key2].x+50,enemyList[key2].y,25,25,1,1);
+                            Enemy(Math.random(),enemyList[key2].x-50,enemyList[key2].y,25,25,1,1);
+                        }
+                        delete enemyList[key2];                        
+                    }
+                    
+                    break;
+                }                  
+        }
+    }
+    
+}
+// UPGRADE
+upgradeList = {};
+
+Upgrade = function (id,x,y,width,height,category,img){
+	var self = {
+                x:x,
+                y:y,
+                id:id,
+                width:width,
+                height:height,
+                category:category,
+                img:img,
+    };
+    self.category = category;
+    upgradeList[id] = self;
+    self.upgradeTimer = 0
+    self.update = function() {
+        self.draw()
+        self.upgradeTimer += 10
+    }
+    self.draw = function() {
+        ctx.drawImage(self.img,0,0,self.img.width,self.img.height,self.x-(self.width/2),self.y-(self.height/2),self.width,self.height);
+    }
+    self.testCollision = function(entity2){	//return if colliding (true/false)
+		var rect1 = {
+			x:self.x-self.width/2,
+			y:self.y-self.height/2,
+			width:self.width,
+			height:self.height,
+		}
+		var rect2 = {
+			x:entity2.x-entity2.width/2,
+			y:entity2.y-entity2.height/2,
+			width:entity2.width,
+			height:entity2.height,
+		}
+		return testCollisionRectRect(rect1,rect2);
+    }
+}
+Upgrade.randomlyGenerate = function(){
+	//Math.random() returns a number between 0 and 1
+	var x = Math.random()*WIDTH;
+	var y = Math.random()*HEIGHT;
+	var height = 40;
+	var width = 40;
+    var id = Math.random();
+    
+    var chance = Math.random() * 100;
+	
+	if(chance < 20){
+        var category = 'score';
+        var Img = img.coin
+    } 
+    else if(chance < 40) {
+        var category = 'atkSpd';
+        var Img = img.fireRate
+    }
+    else if(chance < 60) {
+        var category = 'nuke';
+        var Img = img.nuke
+    }
+    else if(chance < 80) {
+        var category = 'fix';
+        var Img = img.fix
+    }
+    else if(chance < 100) {
+        var category = 'slow';
+        var Img = img.fix
+    }
+	
+	Upgrade(id,x,y,width,height,category,Img);
+}
+
+Upgrade.update = function(){
+	if(frameCount % 150 === 0)
+		Upgrade.randomlyGenerate();
+	for(var key in upgradeList){
+        upgradeList[key].update();
+        var isColliding = upgradeList[key].testCollision(player);
+		if(isColliding){
+			if(upgradeList[key].category === 'score') {
+                upgradeExplosion(upgradeList[key].x,upgradeList[key].y,Math.random(),upgradeList[key].category,80,80,10,9)
+                audio.playSound('coinSound');
+				score += 2500;
+                coin++
+            }
+			if(upgradeList[key].category === 'atkSpd') {
+                upgradeExplosion(upgradeList[key].x,upgradeList[key].y,Math.random(),upgradeList[key].category,80,80,10,9)
+                attkSpd = 2
+                attkSpdTimer()
+            }
+            if(upgradeList[key].category === 'fix') {
+                upgradeExplosion(upgradeList[key].x,upgradeList[key].y,Math.random(),upgradeList[key].category,80,80,10,9)
+                hp = hp + 1
+                if (hp > hpMax) {
+                    hp = hpMax
+                }
+            }
+            if(upgradeList[key].category === 'slow') {
+                upgradeExplosion(upgradeList[key].x,upgradeList[key].y,Math.random(),upgradeList[key].category,80,80,10,9)
+                enemySlow = 0.5
+                slowTimer()
+            }
+            if(upgradeList[key].category === 'nuke') {
+                upgradeExplosion(upgradeList[key].x,upgradeList[key].y,Math.random(),upgradeList[key].category,500,500,10,8)
+                audio.playSound('nukeSound');
+                for(var key2 in enemyList) {
+                    if(enemyList[key2].charID == 1 || enemyList[key2].charID == 2 || enemyList[key2].charID == 3 || enemyList[key2].charID == 5) {
+                        score += 250
+                        enemyKilled++
+                        Explosion(enemyList[key2].x,enemyList[key2].y,Math.random(),enemyList[key2].width,enemyList[key2].height)
+                        
+                    }
+                    if(enemyList[key2].charID == 4) {
+                        enemyList[key2].hp -= 5
+                        if(enemyList[key2].hp <= 0) {
+                            Explosion(enemyList[key2].x,enemyList[key2].y,Math.random(),enemyList[key2].width,enemyList[key2].height)
+                            delete enemyList[key2]
+                        }
+                        Explosion(enemyList[key2].x,enemyList[key2].y,Math.random(),50,50)
+                        delete upgradeList[key];
+                    }
+                    else
+                    delete enemyList[key2]
+                }
+            }
+			delete upgradeList[key];
+        }
+	}
+    for(var key2 in upgradeList){
+        if(upgradeList[key2].upgradeTimer == 5000) {
+            upgradeExplosion(upgradeList[key2].x,upgradeList[key2].y,Math.random(),'delete',80,80,10,7)
+           delete upgradeList[key2];
+        }
+    }
+}	
+function attkSpdTimer() {
+  setTimeout(function(){ attkSpd = 1; }, 7500);
+}
+function slowTimer() {
+  setTimeout(function(){ enemySlow = 1; }, 5000);
+}
+// EXPLOSION
+explosionList = {};
+Explosion = function(x, y, id = Math.random(),width,height,charID) {
+    var self = {
+                x:x,
+                y:y,
+                id:id,
+                width:width,
+                height:width,
+                charID:charID,
+    };
+    explosionList[id] = self;
+    self.explosionTimer = 0;
+    self.animationTimer = 0;
+    self.animationTime_Y = 0
+    self.multiplier = 1;
+    self.update = function() {
+        self.draw();
+        self.explosionTimer += 0.25;
+        self.animationTimer += 0.5;
+    }
+    self.draw = function() {
+        var animationTime_X = Math.floor(self.animationTimer) % 9;
+        if(animationTime_X == 8){        
+            self.animationTime_Y += 1          
+        }
+        if(self.width < 100) {
+            self.multiplier = 1.5
+        }
+        if(self.width > 100) {
+            self.multiplier = 0.65
+        }
+        ctx.drawImage(img.explosion,animationTime_X*100,self.animationTime_Y*100,img.explosion.width/9,
+        img.explosion.height/9,self.x-(self.width/2)*self.multiplier,self.y-(self.height/2)*self.multiplier,self.width*self.multiplier,self.height*self.multiplier);
+    }
+}
+hitExplosion = function(x, y, id = Math.random()) {
+    var self = {
+                x:x,
+                y:y,
+                id:id,
+    };
+    explosionList[id] = self;
+    self.explosionTimer = 0;
+    self.animationTimer = 0;
+    self.update = function() {
+        self.draw();
+        self.explosionTimer += 0.75;
+        self.animationTimer += 0.25;
+    }
+    self.draw = function() {
+        var animationTime_X = 0;
+        var animationTime_X = Math.floor(self.animationTimer) % 9;
+        ctx.drawImage(img.explosion,animationTime_X*100,0,img.explosion.width/9,img.explosion.height/9,self.x-10,self.y-10,20,20);
+    }
+}
+
+upgradeExplosion = function(x, y, id = Math.random(), category, width, height ,frameWidth, frameHeight ) {
+    var self = {
+                x:x,
+                y:y,
+                id:id,
+                category:category,
+                width:width,
+                height:height,
+                frameWidth:frameWidth,
+                frameHeight:frameHeight,
+    };
+    explosionList[id] = self;
+    self.explosionTimer = 0;
+    self.animationTimer = 0;
+    self.animationTime_Y = 0
+    self.update = function() {
+        self.draw();
+        self.explosionTimer += 0.35;
+        self.animationTimer += 0.5;
+    }
+    self.draw = function() {
+
+        var animationTime_X = Math.floor(self.animationTimer) % 10;
+
+        if(animationTime_X == 9){         
+            self.animationTime_Y += 1     
+        }
+        ctx.drawImage(checkExplosion(self.category),animationTime_X*100,self.animationTime_Y*100,checkExplosion(self.category).width/frameWidth,
+        checkExplosion(self.category).height/frameHeight,self.x-(width/2),self.y-(height/2),
+        width,height);
+    }
+}
+        
+
+checkExplosion = function(category) {
+    if(category == 'score' || category == 'atkSpd' || category == 'fix' || category == 'slow') {
+        return img.explosion2
+    }
+    if(category == 'nuke') {
+        return img.explosion3
+    }
+    if(category == 'delete') {
+        return img.explosion4
+    }
+}
+
+Explosion.update = function() {
+    for(var key in explosionList) {
+        explosionList[key].update();
+        if(explosionList[key].explosionTimer == 30) {
+            delete explosionList[key]
+        }
+    }
+}
+
+testCollisionRectRect = function(rect1,rect2){
+	return rect1.x <= rect2.x+rect2.width
+		&& rect2.x <= rect1.x+rect1.width
+		&& rect1.y <= rect2.y + rect2.height
+		&& rect2.y <= rect1.y + rect1.height;
+}
+// DIFFICULTY CONTROL
+difficultyCheck = function() {
+    var time = (Date.now() - gameStartedTime)/1000
+    if(time > 10*enemySpawnRateControl && time < 10*enemySpawnRateControl+1) {
+        enemySpawnRate --
+        enemySpawnRateControl++
+    }
+    if(time > 10*alienSpawnControl && time < 10*alienSpawnControl+1) {
+        alienSpawnControl++
+        alienSpawnChance_4 += 10
+        alienSpawnChance_3 = alienSpawnChance_2 + alienSpawnChance_4 + alienSpawnChance_5 + 1.25
+        alienSpawnChance_2 = alienSpawnChance_3 + alienSpawnChance_4 + alienSpawnChance_5 + 1.75
+        alienSpawnChance_5 = alienSpawnChance_2 + alienSpawnChance_3 + alienSpawnChance_4 + 2.25
+        if(alienSpawnChance_4 >= 10) {
+            alienSpawnChance_4 = 10
+        }
+        if(alienSpawnChance_3 >= 30) {
+            alienSpawnChance_3 = 30
+        }
+        if(alienSpawnChance_2 >= 60) {
+            alienSpawnChance_2 = 60
+        }
+        if(alienSpawnChance_5 >= 80) {
+            alienSpawnChance_5 = 80
+        }
+    }
+
+}
+setInterval(difficultyCheck,500)
+// EVEN LISTENER
+var rightPressed = false;
+var leftPressed = false;
+var upPressed = false;
+var downPressed = false;
+var spacePressed = false;
+var wPressed = false;
+var aPressed = false;
+var sPressed = false;
+var dPressed =false;
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = true;
+        document.getElementById("right").style.backgroundColor = "blue";
+        document.getElementById("right").style.color = "white";
+
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = true;
+        document.getElementById("left").style.backgroundColor = "blue";
+        document.getElementById("left").style.color = "white";
+ 
+    }
+    else if(e.key == "Up" || e.key == "ArrowUp") {
+        upPressed = true;
+        document.getElementById("up").style.backgroundColor = "blue";
+        document.getElementById("up").style.color = "white";
+
+    }
+        else if(e.key == "Down" || e.key == "ArrowDown") {
+        downPressed = true;
+        document.getElementById("down").style.backgroundColor = "blue";
+        document.getElementById("down").style.color = "white";
+
+    }
+    else if(e.keyCode == 32) {
+        spacePressed = true;
+        document.getElementById("space").style.backgroundColor = "blue";
+        document.getElementById("space").style.color = "white";
+        Paused = !Paused;
+    }
+    else if(e.keyCode == 87) {
+        wPressed = true;
+        document.getElementById("W").style.backgroundColor = "blue";
+        document.getElementById("W").style.color = "white";
+    }
+    else if(e.keyCode == 65) {
+        aPressed = true;
+        document.getElementById("A").style.backgroundColor = "blue";
+        document.getElementById("A").style.color = "white";
+    }
+    else if(e.keyCode == 83) {
+        sPressed = true;
+         document.getElementById("S").style.backgroundColor = "blue";
+        document.getElementById("S").style.color = "white";
+    }
+    else if(e.keyCode == 68) {
+        dPressed = true;
+        document.getElementById("D").style.backgroundColor = "blue";
+        document.getElementById("D").style.color = "white";
+    }
+}
+
+function keyUpHandler(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = false;
+        document.getElementById("right").style.backgroundColor = "aliceblue";
+        document.getElementById("right").style.color = "black";
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = false;
+        document.getElementById("left").style.backgroundColor = "aliceblue";
+        document.getElementById("left").style.color = "black";
+    }
+    else if(e.key == "Up" || e.key == "ArrowUp") {
+        upPressed = false;
+        document.getElementById("up").style.backgroundColor = "aliceblue";
+        document.getElementById("up").style.color = "black";
+    }
+    else if(e.key == "Down" || e.key == "ArrowDown") {
+        downPressed = false;
+        document.getElementById("down").style.backgroundColor = "aliceblue";
+        document.getElementById("down").style.color = "black";
+    }
+    else if(e.keyCode == 32) {
+        spacePressed = false;
+        document.getElementById("space").style.backgroundColor = "aliceblue";
+        document.getElementById("space").style.color = "black";
+        myMusic.play()
+    }
+    else if(e.keyCode == 87) {
+        wPressed = false;
+        document.getElementById("W").style.backgroundColor = "aliceblue";
+        document.getElementById("W").style.color = "black";
+    }
+    else if(e.keyCode == 65) {
+        aPressed = false;
+        document.getElementById("A").style.backgroundColor = "aliceblue";
+        document.getElementById("A").style.color = "black";
+    }
+    else if(e.keyCode == 83) {
+        sPressed = false;
+        document.getElementById("S").style.backgroundColor = "aliceblue";
+        document.getElementById("S").style.color = "black";
+    }
+    else if(e.keyCode == 68) {
+        dPressed = false;
+        document.getElementById("D").style.backgroundColor = "aliceblue";
+        document.getElementById("D").style.color = "black";
+    }
+}
+//
+var refreshGame = 0
+var refreshExplosion = 0
+</script>
+</script>
+<script lang="text/javascript" src="js/buffer-loader.js"></script>
+<script lang="text/javascript" src="js/audio.js"></script>
+</body>
+</html>
