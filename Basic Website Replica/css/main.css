@@ -1,0 +1,532 @@
+
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/*
+=================================================
+Body
+=================================================
+*/
+body {
+	color:#888;
+	font: 300 16px/22px "Lato", "Open Sans", "Helvetice Neue", Helvetica, Arial, sans-serif;
+	background:	white;
+	/*background-image: url(https://www.nasa.gov/images/content/690958main_p1237a1.jpg);*/
+	background-size: auto;
+	background-repeat: repeat-y;
+	height: 100%;
+	margin: 0;	
+	max-width: 100%;
+	overflow-x: hidden;
+}
+/*
+==================================================
+Header
+==================================================
+*/
+.header {
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 175px;
+	background-image: url("https://ak5.picdn.net/shutterstock/videos/9759545/thumb/1.jpg");
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	padding: 10px;
+	border-bottom: 3px solid gray;
+  }
+.container {
+	margin:0 auto;
+	padding-left: 30px;
+	padding-right: 30px;
+	width: 960px;
+	height: 125px;
+}
+.quote {
+	font-size: 14px;
+	font-family: sans-serif;
+	font-style: italic;bold;
+}
+/*
+==================================================
+Logo
+==================================================
+*/
+.logo {
+	font-size: 50px;
+	font-style: italic;bold;
+	font-family: all;
+}
+.logo a {
+	color: white;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+.logo2 {
+	font-size: 35px;
+	font-style: italic;bold;
+	font-family: all;
+}
+.logo2 a {
+	color: white;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+/*
+=================================================
+Rows
+=================================================
+*/
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.col-1-3 {
+	float: left;
+    width: 33%;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+/*
+=================================================
+Navigation
+=================================================
+*/
+.header2 {
+    padding: 10px;
+    background: black;
+
+    border-bottom: 2px solid black;
+}
+
+.topnav {
+  overflow: hidden;
+}
+
+.topnav a {
+	border-radius: 10px;
+	float: left;
+	width: 95px;
+	padding: 15px;
+	color: white;
+	text-decoration: none;
+	font-style: bold;
+	font-size: 15px;
+	text-align: center;
+	margin-left: 10px;
+	margin-bottom: 2px;
+	margin-top: 2px
+}
+
+.topnav a:hover {
+  	background-color: #ddd;
+  	color: black;
+  	font-size: 19px;
+}
+.topnav input[type=text] {
+  float: right;
+  padding: 6px;
+  border: none;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: white;
+  border-right: 5px;
+  margin-top: 10px;
+  margin-right: 16px;
+  font-size: 17px;
+}
+.active {
+  	background-color: gray;
+}
+/*
+==================================================
+Typography
+==================================================
+*/
+.bottom {
+	font-size: 10px;
+	color: white;
+	font-style: bold;
+	line-height: 0.9;
+}
+.top {
+	color: lightblue;
+	font-style: bold;
+	font-weight: 550;
+}
+.POM {
+	font-size: 25px;
+	font-weight: 550;
+	font-style: bold;
+	color: black;
+	display: inline;
+}
+.title {
+	color: black;
+	font-weight: 625;
+	font-weight: bold;
+	font-size: 27.5px;
+}
+.mag1 {
+	color: yellow;
+	font-style: bold;
+	font-weight: 650;
+	text-decoration: none;
+	font-size: 19.5px;
+	margin-top: 5px;
+	opacity: 0.8;
+}
+.mag2 {
+	padding: 10px;
+	color: white;
+	font-size: 16.5px;
+	font-style: bold;
+	font-weight: 750;
+	opacity: 0.85;
+	margin-top: 7.5px;
+}
+.mag3 {
+	padding: 7.5px;
+	background-color: red;
+	color: white;
+	margin-left: 22.5px;
+	margin-right: 22.5px;
+	margin-top: 17.5px;
+	font-size: 17.5px;
+	font-style: bold;
+	font-weight: 650;
+	opacity: 0.85;
+	border-radius: 5px;
+}
+.mag3:hover {
+	padding: 7.5px;
+	background-color: red;
+	color: #53b6de;
+	margin-left: 22.5px;
+	margin-right: 22.5px;
+	margin-top: 17.5px;
+	font-size: 17.5px;
+	font-style: bold;
+	font-weight: 750;
+	border-radius: 5px;
+}
+/*
+==================================================
+Main
+==================================================
+*/
+.main {
+	background: gray;
+}
+.col-1 {
+	float: right;
+    width: 20%;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+.col-2 {
+	float: right;
+    width: 69%;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+.col-2-1 {
+	float: right;
+    width: 100%;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+
+.col-3 {
+	float: right;
+    width: 25%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.newsletter {
+	background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjEGvDdrjz2mVzPr1g8YlYMQumSTamHdxgQLy4jHzxGvOOg_td);
+	background-size: cover;
+	background-repeat: no-repeat;
+    background-color: black;
+    padding: 15px;
+    margin-top: 20px;
+    text-align: center;
+}
+.newsletter p {
+	color: white;
+	font-style: bold;
+	font-weight: 500;
+}
+.line {
+    background-color: black;
+    padding: 1px;
+    margin-top: 20px;
+    text-align: center;
+}
+.magazine {
+    background-color: black;
+    padding: 12.5px;
+    margin-top: 20px;
+    text-align: center;
+}
+.subheader {
+    padding: 10px;
+    text-align: center;
+   	border-bottom: 1.5px solid gray;
+   	color: lightblue;
+   	font-style: bold;
+   	font-size: 20px;
+}
+.signup {
+	margin-top: 10px;
+	padding: 5px;
+	border-radius: 7.5px;
+	border: none;
+	width: 65%;
+	background-color: #4CAF50;
+	font-style: bold;
+	font-size: 15px;
+	font-family: all;
+	font-weight: 200;
+	cursor: pointer;
+	color: white;
+}
+.sidepanel {
+	border-radius: 5px;
+    background-color: black;
+    padding: 25px;
+    margin-top: 25px;
+    text-align: center;
+}
+.mainpanel {
+	border-radius: 5px;
+    background-color: white;
+    padding: 25px;
+    margin-top: 25px;
+}
+
+.card {
+	color: white;
+	background-color: black;
+	font-family: sans-serif;
+	font-weight: 650;
+	font-size: 25px;
+	margin: auto;
+	padding: 2.5px;
+}
+.card2 {
+	font-size: 25px;
+	margin: auto;
+	padding: 5px;
+}
+.card2 a {
+	text-decoration: none;
+	font-size: 17.5px;
+	font-weight: 650;
+	color:	#53b6de;
+	font-family: sans-serif;
+}
+.card3 {
+	background-color: grey;
+	margin: auto;
+	margin-top: 17.5px;
+	padding: 0.75px;
+}
+.card4 {
+	font-size: 25px;
+	margin: auto;
+	padding: 5px;
+	height: 145px;
+	border-bottom: 1.5px solid gray;
+	margin-top: 10px;
+}
+.card4 h1 {
+	font-size: 22.5px;
+	font-weight: 600;
+	color: black;
+}
+.card4 p {
+	margin-top: 10px;
+	margin-bottom: 9.5px;
+	font-size: 16.5px;
+	font-weight: 350;
+	color: black;
+}
+.card4 a {
+	text-decoration: none;
+	font-size: 17.5px;
+	font-weight: 550;
+	color: #53b6de;
+}
+.newscontainer {
+	position: relative;
+  	max-width: 800px;
+  	margin: 0 auto;
+}
+.newscontainer a {
+	color: #53b6de;
+	text-decoration: none;
+	font-weight: 450;
+}
+.newscontainer h1 {
+	color: white;
+	font-size: 20px;
+	font-weight: 450;
+}
+.newscontainer .text {
+  position: absolute;
+  bottom: 0;
+  background: rgb(0, 0, 0); 
+  background: rgba(0, 0, 0, 0.5); 
+  color: #f1f1f1;
+  width: 94%;
+  padding: 20px;
+}
+/*
+==================================================
+Footer
+==================================================
+*/
+.footer {
+    padding: 10px;
+    background: black;
+    margin-top: 10px;
+}
+.grid {
+	margin-bottom: 20px;
+    text-align: center;
+    margin-top: 15px;
+   	font-style: bold;
+   	font-size: 17px;
+}
+.grid a {
+	text-decoration: none;
+	font-weight: 650;
+	color: white;
+}
+.container2 {
+	margin: 0 160px 80px 160px;
+	padding-left: 10px;
+	padding-right: 10px;
+	width: 1240px;
+	height: 50px;
+}
+.col-footer-1 {
+	float: left;
+    width: 20%;
+    padding-right: 10px;
+    padding-left: 10px;
+    font-size: 10px;
+}
+.col-footer-2 {
+	float: left;
+    width: 8.5%;
+    height: 100px;
+    line-height: 0.9;
+    border-left: 1px solid white;
+    border-right: 1px solid white;  	
+    text-align: center;
+    font-weight: 650;
+}
+.col-footer-2 a {
+	text-decoration: none;
+	color: white;
+}
+.col-footer-3 {
+	float: left;
+    width: 22%;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-left: 35px;
+}
+.col-footer-4 {
+	float: left;
+    width: 20%;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.POM-caption h1 {
+	font-weight: 625;
+	font-size: 23px;
+	color: black;
+}
+.POM-caption p {
+	color: black;
+}
+/*
+==================================================
+Bread Crumb Trail
+==================================================
+*/
+
+ul.breadcrumb {
+  	list-style: none;
+  	padding-bottom: 10px;
+}
+
+
+ul.breadcrumb li {
+  	display: inline;
+  	font-size: 12.5px;
+  	color: black;
+  	font-weight: 650;
+}
+
+
+ul.breadcrumb li+li:before {
+  	padding: 8px;
+  	color: black;
+  	content: "/\00a0";
+}
+
+
+ul.breadcrumb li a {
+  	text-decoration: none;
+  	color: grey;
+  	font-weight: 450;
+}
+
