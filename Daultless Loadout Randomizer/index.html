@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<meta charset="utf-8">
+<head>
+	<title>Dauntless Build Randomizer</title>
+	    <link rel="icon" type="image/png" href="images/icon/dauntless.png">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:100,300,400">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="js/jquery-ui.js" type="text/javascript"></script>
+        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="js/database/weapons/axe.js" type="text/javascript"></script>
+        <script src="js/database/weapons/chain_blades.js" type="text/javascript"></script>
+        <script src="js/database/weapons/hammer.js" type="text/javascript"></script>
+        <script src="js/database/weapons/repeater.js" type="text/javascript"></script>
+        <script src="js/database/weapons/sword.js" type="text/javascript"></script>
+        <script src="js/database/weapons/warpike.js" type="text/javascript"></script>
+        <script src="js/database/cells/defence.js" type="text/javascript"></script>
+        <script src="js/database/cells/mobility.js" type="text/javascript"></script>
+        <script src="js/database/cells/power.js" type="text/javascript"></script>
+        <script src="js/database/cells/technique.js" type="text/javascript"></script>
+        <script src="js/database/cells/utility.js" type="text/javascript"></script>
+        <script src="js/database/armor/head_armor.js" type="text/javascript"></script>
+        <script src="js/database/armor/torso_armor.js" type="text/javascript"></script>
+        <script src="js/database/armor/arms_armor.js" type="text/javascript"></script>
+        <script src="js/database/armor/legs_armor.js" type="text/javascript"></script>
+        <script src="js/database/lantern.js" type="text/javascript"></script>
+        <script src="js/database/hunt.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="header"><a href=""><img class="center" src="images/icon/logo2.png"></a></div>
+    <div class="row">
+        <div class="column side"></div>
+        <div class="column middle" style="background-color:rgba(54, 52, 52, 0.699);">
+                <div class="sub-header">
+                    <div class="randomize-button center">Randomize</div>
+                </div>
+                <div class="row">
+                    <div id="randomize-slot" class="column left">
+                        <div id="weapon-slot" class="row spacing">
+                            <div class="column info1">
+                                <img id="wep-img" src="images/icon/question.png" alt="">
+                            </div>
+                            <div class="column info2">
+                                <div>
+                                    <div class="item-display"><p id="wep-name" class="title-text" >Weapons</p></div>
+                                    <div id="startUp">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column info3">
+                                <div class="cell-wrap-1">
+                                    <span class="cell-1">
+                                        <img id="wep-cell-1-img" src="images/icon/question.png" alt="">
+                                        <p id="wep-cell-1-name" class="cell-1-info">Cell Slot 1</p>
+                                    </span>
+                                </div>
+                                <div class="cell-divider"></div>
+                                <div class="cell-wrap-2">
+                                    <span class="cell-1"><img id="wep-cell-2-img" src="images/icon/question.png" alt="">
+                                        <p id="wep-cell-2-name" class="cell-1-info">Cell Slot 2</p>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="special-slot" class="row spacing">
+                            <div class="column info1">
+                                <img id="wep-spcl-img" src="images/icon/question.png" alt="">
+                            </div>
+                            <div class="column info2">
+                                <div>
+                                    <div class="item-display"><p id="wep-spcl-name" class="title-text">Special</p></div>
+                                    <div><p id="wep-spcl-desc" class="description-text"></p></div>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="row spacing">
+                            <div class="column info1">
+                                <img id="wep-mod-img" src="images/icon/question.png" alt=""">
+                            </div>
+                            <div class="column info2">
+                                <div>
+                                    <div class="item-display"><p id="wep-mod-name" class="title-text">Mod</p></div>
+                                    <div><p id="wep-mod-desc" class="description-text"></p></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="head-slot" class="row spacing">
+                            <div class="column info1">
+                                <img id="head-img" src="images/icon/question.png" alt="">
+                            </div>
+                            <div class="column info2">
+                                <div>
+                                    <div class="item-display"><p id="head-name" class="title-text">Head Armor</p></div>
+                                    <div id="startUp-2">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column info3">
+                                <div class="cell-wrap-1">
+                                    <span class="cell-1">
+                                        <img id="head-cell-1-img" src="images/icon/question.png" alt="">
+                                        <p id="head-cell-1-name" class="cell-1-info">Cell Slot 1</p>
+                                    </span>
+                                </div>
+                                <div class="cell-divider"></div>
+                                <div class="cell-wrap-2" style="background-color:rgb(46, 49, 49);">
+                                </div>
+                            </div>
+                        </div>  
+                        <div id="torso-slot" class="row spacing">
+                            <div class="column info1">
+                                <img id="torso-img" src="images/icon/question.png" alt="">
+                            </div>
+                            <div class="column info2">
+                                <div>
+                                    <div class="item-display"><p id="torso-name" class="title-text">Torso Armor</p></div>
+                                    <div id="startUp-3">
+                                                
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column info3">
+                                <div class="cell-wrap-1">
+                                    <span class="cell-1">
+                                        <img id="torso-cell-1-img" src="images/icon/question.png" alt="">
+                                        <p id="torso-cell-1-name" class="cell-1-info">Cell Slot 1</p>
+                                    </span>
+                                </div>
+                                <div class="cell-divider"></div>
+                                <div class="cell-wrap-2" style="background-color:rgb(46, 49, 49);">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="arms-slot" class="row spacing">
+                            <div class="column info1">
+                                <img id="arms-img" src="images/icon/question.png" alt="">
+                            </div>
+                            <div class="column info2">
+                                <div>
+                                    <div class="item-display"><p id="arms-name" class="title-text">Arms Armor</p></div>
+                                    <div id="startUp-4">
+                                                    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column info3">
+                                <div class="cell-wrap-1">
+                                    <span class="cell-1">
+                                        <img id="arms-cell-1-img" src="images/icon/question.png" alt="">
+                                        <p id="arms-cell-1-name" class="cell-1-info">Cell Slot 1</p>
+                                    </span>
+                                </div>
+                                <div class="cell-divider"></div>
+                                <div class="cell-wrap-2" style="background-color:rgb(46, 49, 49);">
+                                </div>
+                            </div>
+                        </div>  
+                        <div id="legs-slot" class="row spacing">
+                            <div class="column info1">
+                                <img id="legs-img" src="images/icon/question.png" alt="">
+                            </div>
+                            <div class="column info2">
+                                <div>
+                                    <div class="item-display"><p id="legs-name" class="title-text">Legs Armor</p></div>
+                                    <div id="startUp-5">
+                                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column info3">
+                                <div class="cell-wrap-1">
+                                    <span class="cell-1">
+                                        <img id="legs-cell-1-img" src="images/icon/question.png" alt="">
+                                        <p id="legs-cell-1-name" class="cell-1-info">Cell Slot 1</p>
+                                    </span>
+                                </div>
+                                <div class="cell-divider"></div>
+                                <div class="cell-wrap-2" style="background-color:rgb(46, 49, 49);">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="lantern-slot" class="row spacing">
+                            <div class="column info1">
+                                <img id="lantern-img" src="images/icon/question.png" alt="">
+                            </div>
+                            <div class="column info2">
+                                <div>
+                                    <div class="item-display"><p id="lantern-name" class="title-text">Lantern</p></div>
+                                    <div id="startUp-6">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column info3">
+                                <div class="cell-wrap-1">
+                                    <span class="cell-1">
+                                        <img id="lantern-cell-1-img" src="images/icon/question.png" alt="">
+                                        <p id="lantern-cell-1-name" class="cell-1-info">Cell Slot 1</p>
+                                    </span>
+                                </div>
+                                <div class="cell-divider"></div>
+                                <div class="cell-wrap-2" style="background-color:rgb(46, 49, 49);">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="hunt-slot" class="row " style="background-color: rgb(46, 49, 49)">
+                            <div class="column info1" style="background-color: rgb(46, 49, 49)"">
+                                <img id="hunt-img" src="images/icon/question.png" alt="">
+                            </div>
+                            <div class="column info2" style="background-color: rgb(46, 49, 49)">
+                                <div id="hunt-container">
+                                    <div class="item-display" style="margin-bottom: 20px"><p id="hunt-name" class="title-text">Hunt</p></div>
+                                    <div id="startUp-7">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>               
+                    </div>
+                    <div class="column rigth">
+                        <div class="perk-info-bar spacing">PERKS</div>
+                        <div id="perk-wrapper">
+                            <div id="perk-dropper">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-header">
+                    <div class="randomize-button center">Randomize</div>
+                </div>
+        </div>
+        <div class="column side"></div>
+    </div>
+    <div class="footer">
+        <a href="https://playdauntless.com/patch-notes/">Dauntless 0.8.2A</a>
+    </div>
+</body>
+<script>
+    var noRepeater = true;
+    var firstStart = true;
+    var list = [];
+    $(document).ready(function(){
+        $(".randomize-button").click(function(){
+            $("#perk-dropper").remove()
+            $('#head-weak').remove()
+            $('#head-resist').remove()
+            $('#head-info-text').remove()
+            $('#torso-weak').remove()
+            $('#torso-resist').remove()
+            $('#torso-info-text').remove()
+            $('#arms-weak').remove()
+            $('#arms-resist').remove()
+            $('#arms-info-text').remove()
+            $('#legs-weak').remove()
+            $('#legs-resist').remove()
+            $('#legs-info-text').remove()
+            $('#hunt-resistance').remove()
+            $('#hunt-weakness').remove()
+            $('#hunt-threat').remove()
+            list.length = 0;
+            var wep_type_ID = Wep_type_RNG()
+            if(firstStart) {
+                $('#hunt-slot').find('.info2').css( "height", "auto" )
+                $('#startUp').append(startupAppend);
+                $('#startUp-2').append(startupAppend_2);
+                $('#startUp-3').append(startupAppend_3);
+                $('#startUp-4').append(startupAppend_4);
+                $('#startUp-5').append(startupAppend_5);
+                $('#startUp-6').append(startupAppend_6);
+                $('#startUp-7').append(startupAppend_7);
+                $('#hunt-container').append("<div><p id=\"hunt-info-text\" class=\"info-text\" style=\"font-weight: 700\">Info :</p><p id=\"hunt-desc\" class=\"description-text\"></p></div>");
+                firstStart = false
+            }
+        if(wep_type_ID == 0) {
+            repeater_checker();
+            var wep_ID = axe[Wep_RNG()]
+            var wep_mod = axe_mods[Math.floor((Math.random() * 3) + 0)]
+            var wep_spcl = axe_specials[Math.floor((Math.random() * 2) + 0)]
+            var cell_1 = Cell_type_checker(wep_ID.cell_1)
+            var cell_2 = Cell_type_checker(wep_ID.cell_2)
+            weapon_generator(wep_ID,wep_mod,wep_spcl,cell_1,cell_2);
+            
+        }
+        else if(wep_type_ID == 1) {
+            repeater_checker();
+            var wep_ID = chain_blades[Wep_RNG()]
+            var wep_mod = chain_blades_mods[Math.floor((Math.random() * 3) + 0)]
+            var wep_spcl = chain_blades_specials[Math.floor((Math.random() * 2) + 0)]
+            var cell_1 = Cell_type_checker(wep_ID.cell_1)
+            var cell_2 = Cell_type_checker(wep_ID.cell_2)
+            weapon_generator(wep_ID,wep_mod,wep_spcl,cell_1,cell_2);
+        }
+        else if(wep_type_ID == 2) {
+            repeater_checker();
+            var wep_ID = hammer[Math.floor((Math.random() * 21) + 0)]
+            var wep_mod = hammer_mods[Math.floor((Math.random() * 3) + 0)]
+            var wep_spcl = hammer_specials[Math.floor((Math.random() * 2) + 0)]
+            var cell_1 = Cell_type_checker(wep_ID.cell_1)
+            var cell_2 = Cell_type_checker(wep_ID.cell_2)
+            if(wep_ID.name == hammer[20].name) {
+                wep_spcl = hammer_specials[2]
+            }
+            weapon_generator(wep_ID,wep_mod,wep_spcl,cell_1,cell_2);
+        }
+        else if(wep_type_ID == 3) {
+            repeater_checker() 
+            noRepeater = false
+            $('#weapon-slot').remove()
+            $('#special-slot').remove()
+            $('#randomize-slot').prepend(repeater_prism_slot)
+            $('#randomize-slot').prepend(repeater_grip_slot)
+            $('#randomize-slot').prepend(repeater_chamber_slot)
+            $('#randomize-slot').prepend(repeater_barrel_slot)
+            $('#randomize-slot').prepend(repeater_slot)
+            $('#repeater-img').attr('src',repeater[0].image);
+            $('#repeater-name').text(repeater[0].name);
+            $('#repeater-cell-1-img').attr('src',Perk_img_checker(Cell_type_checker(repeater[0].cell_1)));
+            $('#repeater-cell-1-name').text(Cell_type_checker(repeater[0].cell_1));
+            $('#repeater-cell-2-img').attr('src',Perk_img_checker(Cell_type_checker(repeater[0].cell_2)));
+            $('#repeater-cell-2-name').text(Cell_type_checker(repeater[0].cell_2));
+            var repeater_barrel_ID = barrel[Math.floor((Math.random() * 7) + 0)]
+            $('#repeater-barrel-img').attr('src',repeater_barrel_ID.image);
+            $('#repeater-barrel-name').text(repeater_barrel_ID.name);
+            $('#repeater-barrel-element-img').attr('src',repeater_barrel_ID.image2);
+            $('#repeater-barrel-element').text(repeater_barrel_ID.elemental_power);
+            $('#repeater-barrel-desc').text(repeater_barrel_ID.description);
+            $('#perk-wrapper').append("<div id=\"perk-dropper\"></div>");
+            var repeater_chamber_ID = chamber[Math.floor((Math.random() * 3) + 0)]
+            $('#repeater-chamber-img').attr('src',repeater_chamber_ID.image);
+            $('#repeater-chamber-name').text(repeater_chamber_ID.name);
+            $('#repeater-chamber-desc').text(repeater_chamber_ID.description);
+            var repeater_grip_ID = grip[Math.floor((Math.random() * 2) + 0)]
+            $('#repeater-grip-img').attr('src',repeater_grip_ID.image);
+            $('#repeater-grip-name').text(repeater_grip_ID.name);
+            $('#repeater-grip-desc').text(repeater_grip_ID.description);
+            var repeater_prism_ID = prism[Math.floor((Math.random() * 6) + 0)]
+            $('#repeater-prism-img').attr('src',repeater_prism_ID.image);
+            $('#repeater-prism-name').text(repeater_prism_ID.name);
+            $('#repeater-prism-desc').text(repeater_prism_ID.description);
+            var repeater_mod_ID = repeater_mod[Math.floor((Math.random() * 6) + 0)]
+            $('#wep-mod-img').attr('src',repeater_mod_ID.image);
+            $('#wep-mod-name').text(repeater_mod_ID.name);
+            $('#wep-mod-desc').text(repeater_mod_ID.description);
+            perk_Drop(Cell_type_checker(repeater[0].cell_1));
+            perk_Drop(Cell_type_checker(repeater[0].cell_2));
+        }
+        else if(wep_type_ID == 4) {
+            repeater_checker();
+            var wep_ID = sword[Math.floor((Math.random() * 22) + 0)]
+            var wep_mod = sword_mods[Math.floor((Math.random() * 3) + 0)]
+            var wep_spcl = sword_specials[Math.floor((Math.random() * 2) + 0)]
+            var cell_1 = Cell_type_checker(wep_ID.cell_1)
+            var cell_2 = Cell_type_checker(wep_ID.cell_2)
+            if(wep_ID.name == sword[21].name) {
+                wep_spcl = sword_specials[2]
+            }
+            weapon_generator(wep_ID,wep_mod,wep_spcl,cell_1,cell_2);
+        }
+        else if(wep_type_ID == 5) {
+            repeater_checker();
+            var wep_ID = warpike[Math.floor((Math.random() * 21) + 0)]
+            var wep_mod = warpike_mods[Math.floor((Math.random() * 3) + 0)]
+            var wep_spcl = warpike_specials[Math.floor((Math.random() * 2) + 0)]
+            var cell_1 = Cell_type_checker(wep_ID.cell_1)
+            var cell_2 = Cell_type_checker(wep_ID.cell_2)
+            if(wep_ID.name == warpike[20].name) {
+                wep_spcl = warpike_specials[2]
+            }
+            weapon_generator(wep_ID,wep_mod,wep_spcl,cell_1,cell_2);
+        }
+        var head_armor_ID = head_armor[Math.floor((Math.random() * 23) + 0)]
+        var head_cell_1 = Cell_type_checker(head_armor_ID.cell_1)
+        if(head_armor_ID.elemental_resist == "None") {
+            $('#head-weak').remove()
+            $('#head-resist').remove()
+            $('#head-info-text').remove()
+        }else {
+            $('#head-resistance').append("<p id=\"head-info-text\" class=\"info-text\" style=\"font-weight: 700\">Resistance :</p>")
+            $('#head-resistance').append(elementalResistance_head)
+        }
+        $('#head-img').attr('src',head_armor_ID.image);
+        $('#head-name').text(head_armor_ID.name);
+        $('#head-element-img').attr('src',head_armor_ID.image2);
+        $('#head-element').text(head_armor_ID.elemental_resist);
+        $('#head-element-weak-img').attr('src',head_armor_ID.image3);
+        $('#head-element-weak').text(head_armor_ID.elemental_weak);
+        $('#head-perk-img').attr('src',Perk_img_checker(head_armor_ID.perk));
+        $('#head-perk-name').text(head_armor_ID.perk);
+        $('#head-cell-1-img').attr('src',Perk_img_checker(head_cell_1));
+        $('#head-cell-1-name').text(head_cell_1);
+        perk_Drop(head_armor_ID.perk);
+        perk_Drop(head_cell_1);
+
+        var torso_armor_ID = torso_armor[Math.floor((Math.random() * 20) + 0)]
+        var torso_cell_1 = Cell_type_checker(torso_armor_ID.cell_1)
+        if(torso_armor_ID.elemental_resist == "None") {
+            $('#torso-weak').remove()
+            $('#torso-resist').remove()
+            $('#torso-info-text').remove()
+        }else {
+            $('#torso-resistance').append("<p id=\"torso-info-text\" class=\"info-text\" style=\"font-weight: 700\">Resistance :</p>")
+            $('#torso-resistance').append(elementalResistance_torso)
+        }
+        $('#torso-img').attr('src',torso_armor_ID.image);
+        $('#torso-name').text(torso_armor_ID.name);
+        $('#torso-element-img').attr('src',torso_armor_ID.image2);
+        $('#torso-element').text(torso_armor_ID.elemental_resist);
+        $('#torso-element-weak-img').attr('src',torso_armor_ID.image3);
+        $('#torso-element-weak').text(torso_armor_ID.elemental_weak);
+        $('#torso-perk-img').attr('src',Perk_img_checker(torso_armor_ID.perk));
+        $('#torso-perk-name').text(torso_armor_ID.perk);
+        $('#torso-cell-1-img').attr('src',Perk_img_checker(torso_cell_1));
+        $('#torso-cell-1-name').text(torso_cell_1);
+        perk_Drop(torso_armor_ID.perk);
+        perk_Drop(torso_cell_1);
+
+        var arms_armor_ID = arms_armor[Math.floor((Math.random() * 20) + 0)]
+        var arms_cell_1 = Cell_type_checker(arms_armor_ID.cell_1)
+        if(arms_armor_ID.elemental_resist == "None") {
+            $('#arms-weak').remove()
+            $('#arms-resist').remove()
+            $('#arms-info-text').remove()
+        }else {
+            $('#arms-resistance').append("<p id=\"arms-info-text\" class=\"info-text\" style=\"font-weight: 700\">Resistance :</p>")
+            $('#arms-resistance').append(elementalResistance_arms)
+        }
+        $('#arms-img').attr('src',arms_armor_ID.image);
+        $('#arms-name').text(arms_armor_ID.name);
+        $('#arms-element-img').attr('src',arms_armor_ID.image2);
+        $('#arms-element').text(arms_armor_ID.elemental_resist);
+        $('#arms-element-weak-img').attr('src',arms_armor_ID.image3);
+        $('#arms-element-weak').text(arms_armor_ID.elemental_weak);
+        $('#arms-perk-img').attr('src',Perk_img_checker(arms_armor_ID.perk));
+        $('#arms-perk-name').text(arms_armor_ID.perk);
+        $('#arms-cell-1-img').attr('src',Perk_img_checker(arms_cell_1));
+        $('#arms-cell-1-name').text(arms_cell_1);
+        perk_Drop(arms_armor_ID.perk);
+        perk_Drop(arms_cell_1);
+
+        var legs_armor_ID = legs_armor[Math.floor((Math.random() * 20) + 0)]
+        var legs_cell_1 = Cell_type_checker(legs_armor_ID.cell_1)
+        if(legs_armor_ID.elemental_resist == "None") {
+            $('#legs-weak').remove()
+            $('#legs-resist').remove()
+            $('#legs-info-text').remove()
+        }else {
+            $('#legs-resistance').append("<p id=\"legs-info-text\" class=\"info-text\" style=\"font-weight: 700\">Resistance :</p>")
+            $('#legs-resistance').append(elementalResistance_legs)
+        }
+        $('#legs-img').attr('src',legs_armor_ID.image);
+        $('#legs-name').text(legs_armor_ID.name);
+        $('#legs-element-img').attr('src',legs_armor_ID.image2);
+        $('#legs-element').text(legs_armor_ID.elemental_resist);
+        $('#legs-element-weak-img').attr('src',legs_armor_ID.image3);
+        $('#legs-element-weak').text(legs_armor_ID.elemental_weak);
+        $('#legs-perk-img').attr('src',Perk_img_checker(legs_armor_ID.perk));
+        $('#legs-perk-name').text(legs_armor_ID.perk);
+        $('#legs-cell-1-img').attr('src',Perk_img_checker(legs_cell_1));
+        $('#legs-cell-1-name').text(legs_cell_1);
+        perk_Drop(legs_armor_ID.perk);
+        perk_Drop(legs_cell_1);
+        
+        var lantern_ID = lantern[Math.floor((Math.random() * 7) + 0)]
+        var lantern_cell = Cell_type_checker(lantern_ID.cell_1)
+        $('#lantern-img').attr('src',lantern_ID.image);
+        $('#lantern-name').text(lantern_ID.name);
+        $('#lantern-desc-1').text(lantern_ID.description_1);
+        $('#lantern-desc-2').text(lantern_ID.description_2);
+        $('#lantern-cell-1-img').attr('src',Perk_img_checker(lantern_cell));
+        $('#lantern-cell-1-name').text(lantern_cell);
+        perk_Drop(lantern_cell);
+
+        var hunt_ID = behemoth[Math.floor((Math.random() * 45) + 0)]
+        if(hunt_ID.elemental_resist == "None") {
+            $('#hunt-resistance').remove()
+            $('#hunt-weakness').remove()
+            $('#hunt-threat').remove()
+        }else {
+            $('#hunt-resistance').remove()
+            $('#hunt-weakness').remove()
+            $('#startUp-7').prepend("<div id=\"hunt-threat\" class=\"threat-wrap\"><p id=\"hunt-info-text\" class=\"info-text\" style=\"font-weight: 700\">Threat :</p><span class=\"threat\"><p id=\"hunt-threat-text\" class=\"info-text\" style=\"font-weight: 800\">10</p></span></div>")
+            $('#startUp-7').prepend("<div id=\"hunt-weakness\" class=\"element-wrap\" style=\"margin-top: 5px\"><p id=\"hunt-info-text\" class=\"info-text\" style=\"font-weight: 700\">Weakness :</p><span id=\"hunt-weak\" class=\"element-weak\">-<img id=\"hunt-element-weak-img\" src=\"images/icon/elements/Radiant.png\" alt=\"\"><p id=\"hunt-element-weak\" class=\"info-text\"></p></span></div>")
+            $('#startUp-7').prepend("<div id=\"hunt-resistance\" class=\"element-wrap\"><p id=\"hunt-info-text\" class=\"info-text\" style=\"font-weight: 700\">Resistance :</p><span id=\"hunt-resist\" class=\"element\">+<img id=\"hunt-element-img\" src=\"images/icon/elements/Umbral.png\" alt=\"\"><p id=\"hunt-element\" class=\"info-text\"></p></span></div>")
+        }
+        $('#hunt-img').attr('src',hunt_ID.image);
+        $('#hunt-name').text(hunt_ID.name);
+        $('#hunt-element-img').attr('src',hunt_ID.image2);
+        $('#hunt-element').text(hunt_ID.elemental_resist);
+        $('#hunt-element-weak-img').attr('src',hunt_ID.image3);
+        $('#hunt-element-weak').text(hunt_ID.elemental_weak);
+        $('#hunt-threat-text').text(hunt_ID.threat);
+        $('#hunt-desc').text(hunt_ID.description);
+        });
+    });
+
+    repeater_checker = function() {
+        $('#repeater-slot').remove()
+        $('#repeater-barrel-slot').remove()
+        $('#repeater-chamber-slot').remove()
+        $('#repeater-grip-slot').remove()
+        $('#repeater-prism-slot').remove()
+        if(!noRepeater) {
+            $('#randomize-slot').prepend(special_slot)
+            $('#randomize-slot').prepend(weapon_slot)
+            $('#startUp').append(startupAppend);
+            noRepeater = true;
+        }
+    }
+
+    weapon_generator = function(wep_ID,wep_mod,wep_spcl,cell_1,cell_2) {
+        $('#wep-img').attr('src',wep_ID.image);
+            $('#wep-name').text(wep_ID.name);
+            $('#wep-element-img').attr('src',wep_ID.image2);
+            $('#wep-element').text(wep_ID.elemental_power);
+            $('#wep-perk-img').attr('src',Perk_img_checker(wep_ID.perk));
+            $('#wep-perk-name').text(wep_ID.perk);
+            $('#wep-cell-1-img').attr('src',Perk_img_checker(cell_1));
+            $('#wep-cell-1-name').text(cell_1);
+            $('#wep-cell-2-img').attr('src',Perk_img_checker(cell_2));
+            $('#wep-cell-2-name').text(cell_2);
+            $('#wep-spcl-img').attr('src',wep_spcl.image);
+            $('#wep-spcl-name').text(wep_spcl.name);
+            $('#wep-spcl-desc').text(wep_spcl.description);
+            $('#wep-mod-img').attr('src',wep_mod.image);
+            $('#wep-mod-name').text(wep_mod.name);
+            $('#wep-mod-desc').text(wep_mod.description);
+            $('#perk-wrapper').append("<div id=\"perk-dropper\"></div>");
+            perk_Drop(wep_ID.perk);
+            perk_Drop(cell_1);
+            perk_Drop(cell_2);
+    }
+
+    perk_Drop = function(cell) {
+        if(cell == "None")
+            return
+        for(var index in list) {
+            if(cell == list[index]) {
+                return
+            }
+        }
+        list.push(cell)
+        $('#perk-dropper').append("<div class=\"perk-info-card spacing\"><img src=\""+Perk_img_checker(cell)+"\" alt=\"\"><p class=\"perk-info-text\">"+cell+"</p></div>");
+    }
+
+
+    Wep_type_RNG = function() {
+        var result = Math.floor((Math.random() * 6) + 0);
+        return result;
+    }
+
+    Wep_RNG = function() {
+        var result = Math.floor((Math.random() * 20) + 0);
+        return result;
+    }
+    
+    Cell_type_checker = function(cell_name) {
+        if(cell_name == "Defence") {
+            var cell_ID = defence[Math.floor((Math.random() * 12) + 0)]
+            return cell_ID.name
+        }
+        else if(cell_name == "Mobility") {
+            var cell_ID = mobility[Math.floor((Math.random() * 7) + 0)]
+            return cell_ID.name
+        }
+        else if(cell_name == "Power") {
+            var cell_ID = power[Math.floor((Math.random() * 8) + 0)]
+            return cell_ID.name
+        }
+        else if(cell_name == "Technique") {
+            var cell_ID = technique[Math.floor((Math.random() * 12) + 0)]
+            return cell_ID.name
+        }
+        else if(cell_name == "Utility") {
+            var cell_ID = utility[Math.floor((Math.random() * 9) + 0)]
+            return cell_ID.name
+        }
+        else {
+            return "None"
+        }
+    }
+
+    Perk_img_checker = function(perk_name) {
+        var notFound = true;
+        var cycle = 0;
+        if(cycle == 0) {
+            for(var counter1 in defence) {
+                if(perk_name == defence[counter1].name) {
+                    return "images/perks/Defence.png"
+                }
+            }
+            if(notFound) {
+                cycle++
+            }
+        }
+        if(cycle == 1) {
+            for(var counter2 in mobility) {
+                if(perk_name == mobility[counter2].name) {
+                    return "images/perks/Mobility.png"
+                }
+            }
+            if(notFound) {
+                cycle++
+            }
+        }
+        if(cycle == 2) {
+            for(var counter3 in power) {
+                if(perk_name == power[counter3].name) {
+                    return "images/perks/Power.png"
+                }
+            }
+            if(notFound) {
+                cycle++
+            }
+        }
+        if(cycle == 3) {
+            for(var counter4 in technique) {
+                if(perk_name == technique[counter4].name) {
+                    return "images/perks/Technique.png"
+                }
+            }
+            if(notFound) {
+                cycle++
+            }
+        }
+        if(cycle == 4) {
+            for(var counter5 in utility) {
+                if(perk_name == utility[counter5].name) {
+                    return "images/perks/Utility.png"
+                }
+            }
+            if(notFound) {
+                return "images/icon/red_x.png"
+            }
+        }
+    }
+
+</script>
+</html>
